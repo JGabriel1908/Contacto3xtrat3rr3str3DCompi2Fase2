@@ -46,10 +46,6 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
-/**
- * Pestaña de edición de un archivo: texto con coloreado, números de línea, deshacer/rehacer,
- * indentación automática y marcado de errores léxicos/sintácticos mientras se escribe.
- */
 public class Editor extends JPanel {
 
     private static final String SANGRIA = "    ";

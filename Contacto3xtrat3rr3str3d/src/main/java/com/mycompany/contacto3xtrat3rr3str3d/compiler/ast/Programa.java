@@ -3,9 +3,8 @@ package com.mycompany.contacto3xtrat3rr3str3d.compiler.ast;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Proyecto completo, ya tomo en cuenta los tres archivos
- */
+//Proyecto completo, ya tomo en cuenta los tres archivos
+ 
 public class Programa extends Nodo {
 
     private final UnidadPigLatin principal;

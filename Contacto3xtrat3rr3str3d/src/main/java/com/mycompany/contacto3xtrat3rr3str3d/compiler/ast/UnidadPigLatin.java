@@ -32,7 +32,6 @@ public class UnidadPigLatin extends Unidad {
         principal.getInstrucciones().forEach(i -> i.analizar(ctx));
     }
 
-    /** Las variables globales y MAIOR> forman el cuerpo de main(), con su marco desde stack[0]. */
     @Override
     public void generar(ContextoC3D ctx) {
         ctx.iniciarFuncion(0);

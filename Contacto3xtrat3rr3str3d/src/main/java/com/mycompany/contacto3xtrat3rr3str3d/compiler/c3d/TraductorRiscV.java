@@ -4,19 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Traduce las cuartetas a ensamblador RISC-V (RV32IMFD) para el simulador RARS.
- *
- * Igual que en el C intermedio, stack, heap y los temporales guardan valores double:
- * <ul>
- *   <li>s0 = P y s1 = H (enteros), s2 = base del stack, s3 = base del heap, s4 = base de los temporales.</li>
- *   <li>stack, heap y temporales se reservan al iniciar con sbrk; cada posición ocupa 8 bytes.</li>
- *   <li>Cada cuarteta carga sus operandos en ft0/ft1, opera y guarda el resultado.</li>
- *   <li>Las funciones guardan ra en la pila real (sp) para permitir la recursión.</li>
- *   <li>No hay funciones auxiliares: las nativas y las rutinas de entrada/salida se expanden en línea
- *   en cada uso, con sus etiquetas renombradas. Solo las funciones del programa usan jal/ret.</li>
- * </ul>
- */
 public final class TraductorRiscV {
 
     static final int TAMANO_STACK = 150000;
@@ -203,10 +190,6 @@ public final class TraductorRiscV {
         }
     }
 
-    /**
-     * Copia aquí el cuerpo de la nativa: sus etiquetas llevan un sufijo propio de esta copia y cada
-     * return salta al final de la copia en lugar de volver con ret.
-     */
     private void expandirNativa(String nombre, boolean enFuncion) {
         String sufijo = "_" + (++copias);
         String fin = "fin_" + nombre + sufijo;
@@ -225,12 +208,10 @@ public final class TraductorRiscV {
         bytesUtf8 = anterior;
     }
 
-    /** Copia aquí una rutina de entrada/salida; "@" en sus etiquetas se cambia por un sufijo único. */
     private void rutina(String plantilla) {
         sb.append(plantilla.replace("@", "_" + (++copias)));
     }
 
-    /** Compara a y b (double) y deja 1 o 0 en t1. */
     private void comparar(String simbolo, String a, String b) {
         cargar(a, "ft0");
         cargar(b, "ft1");
@@ -329,15 +310,6 @@ public final class TraductorRiscV {
         sb.append("    ").append(instruccion).append('\n');
     }
 
-    /**
-     * Rutinas de entrada/salida sobre las llamadas al sistema de RARS, para expandir en línea:
-     * <ul>
-     *   <li>IMPRIMIR_BYTE recibe en a0 los bytes UTF-8 de las cadenas y los junta en un carácter
-     *   antes de imprimirlo (ecall 11), para que las tildes y la ñ se vean bien.</li>
-     *   <li>LEER_CARACTER deja en a0 el siguiente carácter de la entrada (o -1 al terminar);
-     *   lee línea por línea con ecall 8 porque ecall 12 no acepta el salto de línea.</li>
-     * </ul>
-     */
     private static final String IMPRIMIR_BYTE = """
                 la t3, utf8_pendientes
                 lw t4, 0(t3)

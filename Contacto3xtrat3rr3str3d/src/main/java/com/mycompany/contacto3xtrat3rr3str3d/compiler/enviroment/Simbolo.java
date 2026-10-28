@@ -53,12 +53,10 @@ public class Simbolo {
         return tipo;
     }
 
-    /** Nodo que declara el símbolo (DeclaracionVariable, Parametro, Atributo, Campo, DefFuncion...). */
     public Nodo getDeclaracion() {
         return declaracion;
     }
 
-    /** Posición en el marco de la función (variables y parámetros) o en el objeto (atributos). */
     public int getDesplazamiento() {
         return desplazamiento;
     }

@@ -11,11 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Clase registrada: atributos, constructores y métodos (agrupados por nombre por la sobrecarga).
- * Un objeto en el heap es [identificador de clase, atributos heredados..., atributos propios...];
- * el identificador permite elegir en tiempo de ejecución el método sobrescrito (polimorfismo).
- */
+
 public class InfoClase {
 
     private final DefClase definicion;
@@ -115,11 +111,6 @@ public class InfoClase {
         return false;
     }
 
-    /**
-     * Constructor que se ejecuta cuando no se llama a uno explícitamente (new sin argumentos o un constructor
-     * hijo sin super(...)): el constructor sin parámetros de la clase más cercana que declare constructores.
-     * Devuelve null si ninguna clase de la cadena declara constructores.
-     */
     public static DefConstructor constructorImplicito(InfoClase clase) {
         for (InfoClase c = clase; c != null; c = c.padre) {
             if (c.getConstructores().isEmpty()) continue;
@@ -128,7 +119,6 @@ public class InfoClase {
         return null;
     }
 
-    /** true si alguna clase de la cadena (desde clase hacia arriba) declara constructores. */
     public static boolean tieneConstructores(InfoClase clase) {
         for (InfoClase c = clase; c != null; c = c.padre) {
             if (!c.getConstructores().isEmpty()) return true;
